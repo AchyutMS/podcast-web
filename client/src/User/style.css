@@ -1,0 +1,38 @@
+.topBar {
+    background-color: #181818;
+    width:calc(100% -10px);
+    border-radius: 10px;
+    height:50px;
+    margin: 10px 10px 5px 10px;
+    display:flex;
+    padding-left: 10px;
+    align-items: center;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    background-color: blue;
+  }
+
+::-webkit-scrollbar{
+    width:'12px'
+}
+
+.mainBar {
+    background-color: #181818;
+    color: #cfcfcf;
+    font-size: 20px;
+    font-weight: 700;
+    width:calc(100% -10px);
+    height:calc(100vh - 170px);
+    border-radius: 10px;
+    padding: 20px;
+    overflow-y: auto;
+    margin: 5px 10px 5px 10px;
+}
+.musicBar {
+    background-color: #181818;
+    width:calc(100% -10px);
+    border-radius: 10px;
+    height:80px;
+    margin: 5px 10px 5px 10px;
+}
