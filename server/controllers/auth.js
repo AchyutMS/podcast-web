@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken"
 import { createError } from "../error.js";
 
 export const signup = async (req, res, next) => {
+    console.log("Signup",req.body)
     try {
         var salt = bcrypt.genSaltSync(10)
         req.body.password = bcrypt.hashSync(req.body.password, salt)
@@ -19,6 +20,7 @@ export const signup = async (req, res, next) => {
 };
 
 export const signin = async (req, res, next) => {
+    console.log("signin");
     try {
         const user = await User.findOne({name:req.body.name})
         if(!user) return next(createError(404,"User Not Found!"))
@@ -29,13 +31,12 @@ export const signin = async (req, res, next) => {
 
         const token = jwt.sign({id: user._id}, process.env.JWT)
         const {password, ...others} = user._doc
+        console.log(token)
 
-        res
-            .cookie("access_token", token, {
-            httpOnly: true
-            })
-            .status(200)
-            .json(others)
+        res.cookie("access_token", token, { expires: new Date(Date.now() + 900000), httpOnly: false })            
+           .status(200)
+           .json({...others, "token": token});
+
     } catch(err) {
         next(err)
     }

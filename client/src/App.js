@@ -8,11 +8,11 @@ import AddPodcast from "./Admin/AddPodcast";
 import ManagePodcast from "./Admin/ManagePodcast";
 import Home from "./User/Home";
 import Favorite from "./User/Favorite";
-import Podcast from "./User/Podcast";
 import Login from "./Component/Login";
 import Signup from "./Component/Signup";
 import SideBox from "./Component/SideBox";
 import NoPage from "./Component/NoPage";
+import Profile from "./User/Profile";
 
 
 function App() {
@@ -34,8 +34,8 @@ function App() {
 
       <Routes>
           <Route path="/" element={<Home />} />
-          <Route path='/podcast' element={<Podcast />} />
           <Route path='/favorite' element={<Favorite />} />
+          <Route path='/profile' element={<Profile />} />
           {/* <Route path='/OpPharmacyBilling' element={<OpPharmacyBilling />} /> */}
 
           {/* <Route path="payment" element={<Payment />} /> */}

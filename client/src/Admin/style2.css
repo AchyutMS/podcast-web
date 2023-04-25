@@ -1,0 +1,54 @@
+body {
+    color: #fff;
+  }
+  
+  .MyComponent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    background-color: #353434;
+    color: white;
+  }
+  
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  label {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+  }
+  
+  input[type='text'],
+  input[type='email'],
+  select {
+    padding: 0.5rem;
+    border: none;
+    border-radius: 0.25rem;
+    margin-top: 0.25rem;
+  }
+  
+  input[type='file'] {
+    padding: 0.5rem;
+    border: none;
+    margin-top: 0.25rem;
+    color: transparent;
+    background-color: transparent;
+  }
+  
+  input[type='file']::-webkit-file-upload-button {
+    background-color: #0077cc;
+    color: white;
+    border-radius: 0.25rem
+  }  
