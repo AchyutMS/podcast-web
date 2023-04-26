@@ -6,7 +6,7 @@ const router = express.Router()
 
 
 //ADD SUBSCRIPTION TO CHANNEL
-router.get("/favourites", verifyToken, favourites)
+router.post("/favourites", verifyToken, favourites)
 
 //GET RANDOM VIDEOS LIST
 router.get("/random", random)

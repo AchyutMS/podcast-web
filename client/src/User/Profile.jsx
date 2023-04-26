@@ -2,7 +2,8 @@ import React from "react";
 import {ReactComponent as ProfileImg} from '../resource/profile.svg'
 import {ReactComponent as Profile2} from '../resource/profile2.svg'
 
-export default function Profile() {
+export default function Profile({user}) {
+  console.log(user)
   return (
     <div
       style={{
@@ -38,11 +39,11 @@ export default function Profile() {
           <div>
           <div style={{display:'flex', flexDirection:'column', alignItems:'start', fontSize:'12px', color:'#EA0000'}}>
               <label>Mail Id</label>
-              <input type="text" placeholder="ramcharan@gmail.com" style={{ padding: '20px', color:'white', backgroundColor:'#444', borderRadius:'10px', marginBottom:'20px', border:'none', outline:'none', width:'80%', minWidth:'300px', height:'30px'}} />
+              <input type="text" placeholder={user?.email} style={{ padding: '20px', color:'white', backgroundColor:'#444', borderRadius:'10px', marginBottom:'20px', border:'none', outline:'none', width:'80%', minWidth:'300px', height:'30px'}} />
             </div>
             <div style={{display:'flex', flexDirection:'column', alignItems:'start', fontSize:'12px', color:'#EA0000'}}>
-              <label>Uset Name</label> 
-              <input type="text" placeholder="ramcharan" style={{ padding: '20px', color:'white', backgroundColor:'#444', borderRadius:'10px', marginBottom:'20px', border:'none', outline:'none', width:'80%', minWidth:'300px', height:'40px'}} />
+              <label>User Name</label> 
+              <input type="text" placeholder={user?.name} style={{ padding: '20px', color:'white', backgroundColor:'#444', borderRadius:'10px', marginBottom:'20px', border:'none', outline:'none', width:'80%', minWidth:'300px', height:'40px'}} />
             </div>
             <div style={{display:'flex', flexDirection:'column', alignItems:'start', fontSize:'12px', color:'#EA0000'}}>
               <label>Current password</label>

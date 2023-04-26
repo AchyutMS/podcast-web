@@ -41,3 +41,14 @@ export const signin = async (req, res, next) => {
         next(err)
     }
 };
+
+export const verify = async (req, res, next) => {
+    try {
+        console.log('verify route')
+        const user = await User.findById(req.user.id)
+        res.status(200).json(user)
+
+   } catch (err) {
+        next(err)
+   } 
+}

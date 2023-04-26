@@ -7,7 +7,7 @@ import "./style.css";
 import { useNavigate } from "react-router-dom";
 // import jwtDecode from "jwt-decode";
 
-export default function App_pageDes({isActive, setIsActive}) {
+export default function App_pageDes({isActive, setIsActive, isValidToken, isAdmin}) {
   const [hover1, setHover1] = useState(false);
   const [hover2, setHover2] = useState(false);
   const [hover3, setHover3] = useState(false);
@@ -15,15 +15,15 @@ export default function App_pageDes({isActive, setIsActive}) {
   const navigate = useNavigate()
 
   console.log(isActive)
-
+  console.log('isValidTokennnn',isValidToken)
   const [DToken, setDToken] = useState({})
 
-//   useEffect(() => {
-//     const token = localStorage.getItem('authToken')
-//     const decodedToken = jwtDecode(token).user
-//     setDToken(decodedToken)
-//   },[])
-
+  function handleLogout() {
+    localStorage.removeItem("access_token");
+    // setLoggedIn(false);
+    window.location.reload();
+  }
+  
   return (
       <div
       className={`side-box ${isActive ? "active" : ""}`}
@@ -33,23 +33,6 @@ export default function App_pageDes({isActive, setIsActive}) {
         <div style={{fontSize:'18px', fontFamily:''}}>PODCAST
         <div style={{width:'90px', marginTop:'2px', height:'2px', backgroundColor:'red'}}></div>
         </div>
-        {/* <div className="d-flex flex-column justify-content-center align-items-center">
-          <div
-            style={{
-              width: "100px",
-              height: "100px",
-              borderRadius: "50%",
-              overflow: "hidden",
-            }}
-            className='profile-image'
-          >
-            
-          </div>
-          <p className="mt-4" style={{ fontSize: "12px", letterSpacing:'1.5px' }}>
-            {DToken ? DToken['Hospital name'] : 'Hospital Name'}
-          </p>
-        </div> */}
-          
         <div>
           <div
             style={{
@@ -106,6 +89,88 @@ export default function App_pageDes({isActive, setIsActive}) {
               {/* <Profile className="me-4" /> */}
               profile
             </div>
+
+            {
+              isAdmin &&
+              <div
+              style={{
+                height: "50px",
+                color: hover2 ? "white" : "#c4c4c4",
+                display:'flex',
+                alignItems:'center',
+                paddingLeft:'105px'
+              }}
+              onMouseEnter={() => setHover2(true)}
+              onMouseLeave={() => setHover2(false)}
+              className="align-items-center d-flex"
+              onClick={() => navigate('/add_podcast')}
+            >
+              Add Podcast
+            </div>
+            }
+
+            {
+              isAdmin &&
+              <div
+              style={{
+                height: "50px",
+                color: hover2 ? "white" : "#c4c4c4",
+                display:'flex',
+                alignItems:'center',
+                paddingLeft:'105px'
+              }}
+              onMouseEnter={() => setHover2(true)}
+              onMouseLeave={() => setHover2(false)}
+              className="align-items-center d-flex"
+              onClick={() => navigate('/manage_podcast')}
+            >
+              Manage Podcast
+            </div>
+            }
+
+
+
+            {
+              isValidToken 
+              ?
+              <div
+              style={{
+                height: "50px",
+                color: hover2 ? "white" : "#c4c4c4",
+                display:'flex',
+                alignItems:'center',
+                paddingLeft:'105px'
+              }}
+              onMouseEnter={() => setHover2(true)}
+              onMouseLeave={() => setHover2(false)}
+              className="align-items-center d-flex"
+              onClick={handleLogout}
+
+            >
+              {/* <Profile className="me-4" /> */}
+              sign out
+            </div>
+              :
+              <div
+              style={{
+                height: "50px",
+                color: hover2 ? "white" : "#c4c4c4",
+                display:'flex',
+                alignItems:'center',
+                paddingLeft:'105px'
+              }}
+              onMouseEnter={() => setHover2(true)}
+              onMouseLeave={() => setHover2(false)}
+              className="align-items-center d-flex"
+              onClick={() => navigate('/login')}
+            >
+              {/* <Profile className="me-4" /> */}
+              sign in
+            </div>
+            }
+
+
+
            
           </div>
         </div>

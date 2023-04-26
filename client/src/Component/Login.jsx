@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
-import Cookies from "js-cookie";
+import { Link } from "react-router-dom";
+
 
 import "./Login.css";
 
@@ -54,6 +55,7 @@ const Login = () => {
         </div>
         <button type="submit">Login</button>
       </form>
+      <p>Don't have an account? <Link to="/signup">Sign up here</Link>.</p>
     </div>
   );
 };

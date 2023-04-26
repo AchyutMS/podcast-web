@@ -23,6 +23,7 @@ export const random = async (req, res, next ) => {
 
 
 export const favourites = async (req, res, next ) => {
+
     try {
         const user = await User.findById(req.user.id)
         const favouritePodcasts = user.favourites;

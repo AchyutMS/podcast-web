@@ -1,79 +1,3 @@
-// import React, { useState } from 'react';
-// import axios from 'axios';
-
-// const AddPodcast = () => {
-//   const [formState, setFormState] = useState({
-//     name: '',
-//     email: '',
-//     file: null
-//   });
-
-//   const handleInputChange = (e) => {
-//     const { name, value, files } = e.target;
-
-//     setFormState(prevState => ({
-//       ...prevState,
-//       [name]: files ? files[0] : value
-//     }));
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-
-//     const formData = new FormData();
-//     formData.append('name', formState.name);
-//     formData.append('email', formState.email);
-//     formData.append('file', formState.file);
-
-//     // Make your API call here
-//         try {
-//       // send the form data to the backend server
-//       const response = await axios.post('http://localhost:8800/api/admin/add', formData, {
-//         headers: {
-//           'Content-Type': 'multipart/form-data'
-//         }
-//       });
-//       console.log(response.data);
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-
-//   return (
-//     <form onSubmit={handleSubmit}>
-//       <label>
-//         Name:
-//         <input type="text" name="name" value={formState.name} onChange={handleInputChange} />
-//       </label>
-//       <br />
-//       <label>
-//         Email:
-//         <input type="text" name="email" value={formState.email} onChange={handleInputChange} />
-//       </label>
-//       <br />
-
-//       <div>
-//         <label htmlFor="dropdown">Select an option:</label>
-//         <select id="dropdown" name="dropdown" value={selectedOption} onChange={handleOptionChange}>
-//           <option value="option1">Option 1</option>
-//           <option value="option2">Option 2</option>
-//           <option value="option3">Option 3</option>
-//         </select>
-//       </div>
-//       <br />
-
-//       <label>
-//         File:
-//         <input type="file" name="file" onChange={handleInputChange} />
-//       </label>
-//       <br />
-//       <button type="submit">Submit</button>
-//     </form>
-//   );
-// };
-
-// export default AddPodcast;
-
 import React, { useState } from 'react';
 import './style2.css';
 
@@ -118,7 +42,7 @@ const AddPodcast = () => {
 
   return (
     <div className="MyComponent">
-      <h1>Sign Up</h1>
+      <h1>Add New Podcast</h1>
     <form onSubmit={handleSubmit}>
       <div>
         <label htmlFor="title">Title:</label>

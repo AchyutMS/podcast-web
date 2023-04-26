@@ -10,57 +10,14 @@ import { ReactComponent as LoopR } from "../resource/loopR.svg";
 import { ReactComponent as Favorite } from "../resource/favorite.svg";
 import { ReactComponent as FavoriteR } from "../resource/favoriteR.svg";
 import Entertainment from '../image/entertainment.jpg';
-import Stay from '../image/stay.mp3';
-import Alone from '../image/alone.mp3';
-import HeatWaves from '../image/HeatWaves.mp3';
-import noLie from '../image/noLie.mp3';
-import Unstoppable from '../image/Unstoppable.mp3';
-import placeHolder from '../image/placeHolder.jpeg';
 import {useNavigate} from 'react-router-dom'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
+
+import axios from 'axios';
+
 
 export default function Home() {
-
   const navigate = useNavigate()
-
-  const data = [
-    {
-      id:0,
-        audio: Alone,
-        Name: 'Podcast1',
-        description: 'This is a discription1',
-        genre:'Entertainment'
-    },
-    {
-      id:1,
-        audio: HeatWaves,
-        Name: 'Podcast2',
-        description: 'This is a discription2',
-        genre:'Infotainment'
-    },
-    {
-      id:2,
-        audio: noLie,
-        Name: 'Podcast3',
-        description: 'This is a discription3',
-        genre:'Entertainment'
-    },
-    {
-      id:3,
-        audio: Stay,
-        Name: 'Podcast4',
-        description: 'This is a discription4',
-        genre:'Infotainment'
-
-    },
-    {
-      id:4,
-        audio: Unstoppable,
-        Name: 'Podcast5',
-        description: 'This is a discription5',
-        genre:'Sports'
-    },
-]
 
   const [isPause, setIsPause] = useState(false)
   const audioRef = useRef();
@@ -79,7 +36,6 @@ export default function Home() {
   }
 
   const handlePlayPause = () => {
-    console.log(isPause)
     if (isPause) {
       audioRef.current.pause();
     } else {
@@ -151,39 +107,95 @@ export default function Home() {
 
   const handleSongClick = (id) => {
     setCurrentSongIndex(id)
-    setIsPause(!isPause)
-    console.log(id)
+    setIsPause(true)
+  
     
   } 
 
   const handleDoubleClick = (id) => {
+    console.log(id)
     navigate(`/podcast/${id}`, {
       state: {
         rec: id,
       },})
   }
+
+  const [data, setData] = useState([])
+
+  useEffect(() => {
+    async function fetchData() {
+      // const response = await fetch('http://localhost:8800/api/podcasts/random');
+      const token = localStorage.getItem('access_token');
+      await axios.post('http://localhost:8800/api/podcasts/favourites', null, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(async response => {
+          const data = await response.data;
+          console.log(data);
+
+          let idCounter = 0;
+
+          const dataWithId = data.map(item => {
+            const newItem = {
+              id: idCounter,
+              desc: item.desc,
+              imgUrl: item.imgUrl,
+              imgUrl: item.imgUrl,
+              podcastType: item.podcastType,
+              podcastUrl: item.podcastUrl,
+              title: item.title.charAt(0).toUpperCase()+item.title.slice(1),
+              unqId: item._id
+            };
+            idCounter++;
+            return newItem;
+    
+    
+          });
+
+          setData(dataWithId)
+
+        })
+        .catch(error => {
+          console.error(error);
+        });
+
+
+
+
+      
+
+
+    }
+    
+    fetchData();
+  }, []);
+
   
 
+  // data[0] !== undefined && console.log('http://localhost:8800/audio/'+data[5].podcastUrl)
+  
   return (
     <div style={{display:'flex',flexDirection:'column', width:'100%', height:'100%'}}>
       <div className='topBar'>
         <input onChange={(e) => setSearch(e.target.value.toLowerCase())} placeholder='Type here....' type="text" style={{ color:'white', fontSize:'18px',fontWeight:'700', backgroundColor:'#3e3e3e', width:'400px', height:'40px' , padding:'0 20px', borderRadius:'10px', border:'none', outline:'none'}}  />
       </div>
       <div className='mainBar'>
-        <div><div>Entertainement</div>
-          <div style={{margin:'10px', display: 'flex', overflowX:'auto'}}>
+        <div><div>Your Favourites</div>
+          <div style={{margin:'10px', display: 'flex', flexWrap:'wrap'}}>
             {
-              data.filter(d => d.genre == 'Entertainment').map(d => {
+              data.length > 0 && data.map(d => {
                 return (
-                  <div onClick={() => handleSongClick(d.id)} onDoubleClick={() => handleDoubleClick(d.id)}  style={{padding:'5px', marginRight:'10px', backgroundColor:'#272727', display:'flex', width:'400px'}}>
-              <img style={{width:'150px', height:'150px'}} src={Entertainment} />
+                  <div onClick={() => handleSongClick(d.id)} style={{padding:'5px', marginRight:'10px', marginBottom:'10px', backgroundColor:'#272727', display:'flex', width:'400px'}}>
+              <img style={{width:'150px', height:'150px'}} src={'http://localhost:8800/'+d.imgUrl} />
               <div style={{padding:'10px'}}>
                 <div>
-                  {d.Name}
+                  {d.title}
                   <div style={{height:'2px', width:'100px', backgroundColor:'#c50000'}}></div>
                 </div>
                 <div style={{fontSize:'12px', marginTop:'10px'}}>
-                  {d.description !== null || d.description !== '' ? d.description : null}
+                  {d.desc !== null || d.desc !== '' ? d.desc : null}
                 </div>
               </div>
             </div>
@@ -191,87 +203,21 @@ export default function Home() {
               })
             }
             
-            {/* <div style={{padding:'5px', marginRight:'10px', backgroundColor:'#272727', display:'flex', width:'400px'}}>
-              <img style={{width:'150px', height:'150px'}} src={Entertainment} />
-              <div style={{padding:'10px'}}>
-                <div>
-                  Heading Here
-                  <div style={{height:'2px', width:'100px', backgroundColor:'#c50000'}}></div>
-                </div>
-                <div style={{fontSize:'12px', marginTop:'10px'}}>
-                  Descrption Here Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dicta vero accusantium facilis est quo id unde voluptatem? Ducimus, mollitia quasi.
-                </div>
-              </div>
-            </div> */}
-            {/* <div style={{padding:'5px', marginRight:'10px', backgroundColor:'#272727', display:'flex', width:'400px'}}>
-              <img style={{width:'150px', height:'150px'}} src={Entertainment} />
-              <div style={{padding:'10px'}}>
-                <div>
-                  Heading Here
-                  <div style={{height:'2px', width:'100px', backgroundColor:'#c50000'}}></div>
-                </div>
-                <div style={{fontSize:'12px', marginTop:'10px'}}>
-                  Descrption Here Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dicta vero accusantium facilis est quo id unde voluptatem? Ducimus, mollitia quasi.
-                </div>
-              </div>
-            </div> */}
-          </div>
-        </div>
-        <div><div>Infotainment</div>
-          <div style={{margin:'10px', display: 'flex', overflowX:'auto'}}>
-          {
-              data.filter(d => d.genre == 'Infotainment').map(d => {
-                return (
-                  <div onClick={() => handleSongClick(d.id)} onDoubleClick={() => handleDoubleClick(d.id)} style={{padding:'5px', marginRight:'10px', backgroundColor:'#272727', display:'flex', width:'400px'}}>
-              <img style={{width:'150px', height:'150px'}} src={Entertainment} />
-              <div style={{padding:'10px'}}>
-                <div>
-                  {d.Name}
-                  <div style={{height:'2px', width:'100px', backgroundColor:'#c50000'}}></div>
-                </div>
-                <div style={{fontSize:'12px', marginTop:'10px'}}>
-                  {d.description !== null || d.description !== '' ? d.description : null}
-                </div>
-              </div>
-            </div>
-                )
-              })
-            }
             
-          </div>
-        </div>
-        <div><div>Sports</div>
-          <div style={{margin:'10px', display: 'flex', overflowX:'auto'}}>
-          {
-              data.filter(d => d.genre == 'Sports').map(d => {
-                return (
-                  <div  onClick={() => handleSongClick(d.id)} onDoubleClick={() => handleDoubleClick(d.id)} style={{padding:'5px', marginRight:'10px', backgroundColor:'#272727', display:'flex', width:'400px'}}>
-              <img style={{width:'150px', height:'150px'}} src={Entertainment} />
-              <div style={{padding:'10px'}}>
-                <div>
-                  {d.Name}
-                  <div style={{height:'2px', width:'100px', backgroundColor:'#c50000'}}></div>
-                </div>
-                <div style={{fontSize:'12px', marginTop:'10px'}}>
-                  {d.description !== null || d.description !== '' ? d.description : null}
-                </div>
-              </div>
-            </div>
-                )
-              })
-            }
             
           </div>
         </div>
       </div>
       <div className='musicBar'>
-      <audio
-          src={data[currentSongIndex].audio}
-          ref={audioRef}
-          autoPlay
-          onTimeUpdate={() => setCurrentTime(audioRef.current.currentTime)}
-          onEnded={() => handleNextPrevClick("next")}
-        />
+      {
+        data[0] !== undefined ? <audio
+        src={'http://localhost:8800/audio/'+data[currentSongIndex].podcastUrl}
+        ref={audioRef}
+        // autoPlay
+        onTimeUpdate={() => setCurrentTime(audioRef.current.currentTime)}
+        onEnded={() => handleNextPrevClick("next")}
+      />  : null
+      }
         <div style={{display:'flex', flexDirection:'column',padding:'5px 50px 0 50px', width:'100%', height:'100%', alignItems:'center',justifyContent:'space-evenly'}}>
             <div>
             <input
@@ -290,15 +236,15 @@ export default function Home() {
                 <img style={{width:'30px', height:'30px'}} src={Entertainment} />
                 <div style={{color:'white',marginLeft:'5px'}}>
                   {
-                  data[currentSongIndex].Name.length > 12
-                  ? data[currentSongIndex].Name.substring(0, 12) + "..." :
-                  data[currentSongIndex].Name
+                  data.length>0 ? data[currentSongIndex].title.length > 12
+                  ? data[currentSongIndex].title.substring(0, 12) + "..." :
+                  data[currentSongIndex].title : null
                   }
                 </div>
               </div>
             </div>
             <div style={{display:'flex', flexDirection:'row', alignItems:'center'}}>
-            {favorite ? <div onClick={handleFavorite} style={{marginRight:'20px'}}><FavoriteR /></div> : <div onClick={handleFavorite} style={{marginRight:'20px'}}><Favorite /></div>}
+            {favorite ? <div onClick={handleFavorite} style={{marginRight:'20px'}}><Favorite /></div> : <div onClick={handleFavorite} style={{marginRight:'20px'}}><Favorite /></div>}
             <div onClick={() => handleNextPrevClick('prev')} style={{marginRight:'20px'}}><Previous /></div>
             {
               !isPause ? 

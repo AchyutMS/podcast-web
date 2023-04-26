@@ -5,6 +5,7 @@ import { verifyToken } from "../verifyToken.js"
 const router = express.Router()
 
 
+
 //GET A USER
 router.get("/find/:id", getUser)
 

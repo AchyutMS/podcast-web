@@ -10,56 +10,12 @@ import { ReactComponent as LoopR } from "../resource/loopR.svg";
 import { ReactComponent as Favorite } from "../resource/favorite.svg";
 import { ReactComponent as FavoriteR } from "../resource/favoriteR.svg";
 import Entertainment from '../image/entertainment.jpg';
-import Stay from '../image/stay.mp3';
-import Alone from '../image/alone.mp3';
-import HeatWaves from '../image/HeatWaves.mp3';
-import noLie from '../image/noLie.mp3';
-import Unstoppable from '../image/Unstoppable.mp3';
-import placeHolder from '../image/placeHolder.jpeg';
 import {useNavigate} from 'react-router-dom'
 import { useState, useRef, useEffect } from 'react'
 
-export default function Home() {
+export default function Home({user}) {
   const navigate = useNavigate()
-
-//   const data = [
-//     {
-//       id:0,
-//         audio: Alone,
-//         Name: 'Podcast1',
-//         description: 'This is a discription1',
-//         genre:'Entertainment'
-//     },
-//     {
-//       id:1,
-//         audio: HeatWaves,
-//         Name: 'Podcast2',
-//         description: 'This is a discription2',
-//         genre:'Infotainment'
-//     },
-//     {
-//       id:2,
-//         audio: noLie,
-//         Name: 'Podcast3',
-//         description: 'This is a discription3',
-//         genre:'Entertainment'
-//     },
-//     {
-//       id:3,
-//         audio: Stay,
-//         Name: 'Podcast4',
-//         description: 'This is a discription4',
-//         genre:'Infotainment'
-
-//     },
-//     {
-//       id:4,
-//         audio: Unstoppable,
-//         Name: 'Podcast5',
-//         description: 'This is a discription5',
-//         genre:'Sports'
-//     },
-// ]
+  console.log(user)
 
   const [isPause, setIsPause] = useState(false)
   const audioRef = useRef();
@@ -72,9 +28,28 @@ export default function Home() {
   const [speedVal, setSpeedVal ] = useState(1);
   const [favorite, setFavorite ] = useState(false);
   const [search, setSearch ] = useState('');
+  const [currentSong, setCurrentSong ] = useState({});
+
+  // const checkFavourite =(current) => {
+  //   console.log('cuurent',audioRef.current)
+  //   // let cur;
+  //   // data.map((song) => {
+  //   //   if(song.id == current) {
+  //   //     console.log('hahaha',song)
+  //   //     cur = song
+  //   //   }
+  //   // })
+  //   // setCurrentSong(cur)
+  //   // return false;
+  //   // console.log('current song', currentSong)
+  //   // const checkSong = obj => obj.id === current;
+
+  //   // console.log('is resent ',data.some(checkSong))
+  // }
 
   const handleFavorite = () => {
     setFavorite(!favorite)
+    console.log('favouritessss')
   }
 
   const handlePlayPause = () => {
@@ -179,7 +154,7 @@ export default function Home() {
           imgUrl: item.imgUrl,
           podcastType: item.podcastType,
           podcastUrl: item.podcastUrl,
-          title: item.title,
+          title: item.title.charAt(0).toUpperCase()+item.title.slice(1),
           unqId: item._id
         };
         idCounter++;
@@ -194,9 +169,10 @@ export default function Home() {
     }
     
     fetchData();
-  }, []);
 
-  
+  }, []);
+  console.log(data)
+  console.log(currentSongIndex)
 
   // data[0] !== undefined && console.log('http://localhost:8800/audio/'+data[5].podcastUrl)
   
@@ -237,7 +213,7 @@ export default function Home() {
         data[0] !== undefined ? <audio
         src={'http://localhost:8800/audio/'+data[currentSongIndex].podcastUrl}
         ref={audioRef}
-        autoPlay
+        // autoPlay
         onTimeUpdate={() => setCurrentTime(audioRef.current.currentTime)}
         onEnded={() => handleNextPrevClick("next")}
       />  : null
@@ -269,6 +245,10 @@ export default function Home() {
             </div>
             <div style={{display:'flex', flexDirection:'row', alignItems:'center'}}>
             {favorite ? <div onClick={handleFavorite} style={{marginRight:'20px'}}><FavoriteR /></div> : <div onClick={handleFavorite} style={{marginRight:'20px'}}><Favorite /></div>}
+            
+            {/* {checkFavourite(currentSongIndex) ? <div onClick={handleFavorite} style={{marginRight:'20px'}}><FavoriteR /></div> : <div onClick={handleFavorite} style={{marginRight:'20px'}}><Favorite /></div>} */}
+           
+            
             <div onClick={() => handleNextPrevClick('prev')} style={{marginRight:'20px'}}><Previous /></div>
             {
               !isPause ? 
